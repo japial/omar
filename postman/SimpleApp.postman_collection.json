@@ -1,0 +1,45 @@
+{
+	"info": {
+		"_postman_id": "da9311ff-3402-48c5-ac8e-564d49044672",
+		"name": "SimpleApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "omar",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://devpro.local/authapi/login",
+					"protocol": "http",
+					"host": [
+						"devpro",
+						"local"
+					],
+					"path": [
+						"authapi",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
