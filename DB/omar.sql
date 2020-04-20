@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 19, 2020 at 05:59 PM
+-- Generation Time: Apr 20, 2020 at 06:15 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.4
 
@@ -42,13 +42,43 @@ CREATE TABLE `activity_log` (
 --
 
 CREATE TABLE `transaction` (
-  `id` int(11) NOT NULL,
-  `serial` varchar(255) NOT NULL,
-  `number` int(11) NOT NULL,
-  `amount` double(11,2) NOT NULL,
+  `tran_id` int(11) NOT NULL,
+  `token` varchar(255) NOT NULL,
   `user_id` int(11) NOT NULL,
   `submission_datetime` datetime NOT NULL,
   `deletion_status` int(11) NOT NULL COMMENT '0: Available 1: Deleted'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `transaction_d`
+--
+
+CREATE TABLE `transaction_d` (
+  `tran_d_id` int(11) NOT NULL,
+  `tran_id` int(11) NOT NULL,
+  `tran_type` varchar(10) NOT NULL,
+  `code` int(11) NOT NULL,
+  `st` int(11) NOT NULL,
+  `rbl` int(11) NOT NULL,
+  `submission_datetime` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `transaction_w`
+--
+
+CREATE TABLE `transaction_w` (
+  `tran_w_id` int(11) NOT NULL,
+  `tran_id` int(11) NOT NULL,
+  `tran_type` varchar(10) NOT NULL,
+  `code` int(11) NOT NULL,
+  `st` int(11) NOT NULL,
+  `rbl` int(11) NOT NULL,
+  `submission_datetime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -63,8 +93,17 @@ CREATE TABLE `user` (
   `password` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
   `creation_timestamp` datetime NOT NULL,
-  `status` int(11) NOT NULL COMMENT '1. Active, 2. Deactive'
+  `status` int(11) NOT NULL COMMENT '1. Active, 2. Deactive',
+  `manual` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `username`, `password`, `phone`, `creation_timestamp`, `status`, `manual`) VALUES
+(1, 'omar', 'e10adc3949ba59abbe56e057f20f883e', '01749771212', '2020-04-20 21:56:05', 1, 0),
+(2, 'pial', 'e10adc3949ba59abbe56e057f20f883e', '01736252221', '2020-04-20 22:14:39', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -81,6 +120,13 @@ CREATE TABLE `user_tokens` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Dumping data for table `user_tokens`
+--
+
+INSERT INTO `user_tokens` (`id`, `user_id`, `token`, `created_at`, `updated_at`) VALUES
+(1, 1, 'XKFfZUQfHkNKGRy3bvjrp0bqODpCxlsgc4ca4238a0b923820dcc509a6f75849b9654', '2020-04-20 21:58:54', '2020-04-20 21:58:54');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -94,7 +140,19 @@ ALTER TABLE `activity_log`
 -- Indexes for table `transaction`
 --
 ALTER TABLE `transaction`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`tran_id`);
+
+--
+-- Indexes for table `transaction_d`
+--
+ALTER TABLE `transaction_d`
+  ADD PRIMARY KEY (`tran_d_id`);
+
+--
+-- Indexes for table `transaction_w`
+--
+ALTER TABLE `transaction_w`
+  ADD PRIMARY KEY (`tran_w_id`);
 
 --
 -- Indexes for table `user`
@@ -122,19 +180,31 @@ ALTER TABLE `activity_log`
 -- AUTO_INCREMENT for table `transaction`
 --
 ALTER TABLE `transaction`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `tran_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `transaction_d`
+--
+ALTER TABLE `transaction_d`
+  MODIFY `tran_d_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `transaction_w`
+--
+ALTER TABLE `transaction_w`
+  MODIFY `tran_w_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user_tokens`
 --
 ALTER TABLE `user_tokens`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
