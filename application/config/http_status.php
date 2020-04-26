@@ -18,6 +18,10 @@ $config['status'] = array(
         "code" => 213, 
         "msg" => "Validation Failed"
     ),
+	"deactivated" => array(
+		"code" => 215,
+		"msg" => "Account Deactivated"
+	),
     "system_error" => array(
         "code" => 500, 
         "msg" => "Something Went Wrong"

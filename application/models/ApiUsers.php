@@ -16,7 +16,8 @@ class ApiUsers extends CI_Model
 		return false;
 	}
 
-	public function check_user_token($token = 0) {
+	public function check_user_token($token = 0)
+	{
 		if ($token) {
 			$user_token = $this->db->get_where('user_tokens', array('token' => $token))->row();
 			if ($user_token) {
@@ -26,12 +27,22 @@ class ApiUsers extends CI_Model
 		return false;
 	}
 
-	private function createUserToken($user_id) {
+	public function user_details($id)
+	{
+		$this->db->select('id, username, phone, status, manual');
+		$this->db->from('user');
+		$this->db->where('id', $id);
+		$details = $this->db->get()->row();
+		return $details;
+	}
+
+	private function createUserToken($user_id)
+	{
 		$user_token = $this->db->get_where('user_tokens', array('user_id' => $user_id))->row();
-		$data['token'] = $this->generateRandomString(32).md5($user_id).rand(1000, 9999);
-		if($user_token){
+		$data['token'] = $this->generateRandomString(32) . md5($user_id) . rand(1000, 9999);
+		if ($user_token) {
 			$this->db->update("user_tokens", $data, array('user_id' => $user_id));
-		}else{
+		} else {
 			$data['user_id'] = $user_id;
 			$this->db->insert("user_tokens", $data);
 		}

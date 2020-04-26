@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class Authapi extends CI_Controller
 {
@@ -14,7 +14,8 @@ class Authapi extends CI_Controller
 		$this->load->model('ApiUsers');
 	}
 
-	public function login(){
+	public function login()
+	{
 		$status = $this->config->item('status');
 		if ($_POST) {
 			$password = $this->input->post('password');
