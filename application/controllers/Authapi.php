@@ -23,6 +23,7 @@ class Authapi extends CI_Controller
 			if ($password && $username) {
 				$token = $this->ApiUsers->get_token($username, $password);
 				if ($token) {
+					$this->ApiUsers->createActivity(0, $token, 'User Login Using API');
 					$data['status'] = $status['success'];
 					$data['data'] = array('token' => $token);
 				} else {

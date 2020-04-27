@@ -36,6 +36,28 @@ class ApiUsers extends CI_Model
 		return $details;
 	}
 
+	public function createActivity($user_id = 0, $token = NULL, $action)
+	{
+		if(!$user_id && $token){
+			$user_token = $this->db->get_where('user_tokens', array('token' => $token))->row();
+			$user_id = $user_token->user_id;
+		}
+		if ($user_id) {
+			if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+				$ip = $_SERVER['HTTP_CLIENT_IP'];
+			} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+				$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+			} else {
+				$ip = $_SERVER['REMOTE_ADDR'];
+			}
+			$data['action'] = $action;
+			$data['user_id'] = $user_id;
+			$data['user_ip'] = $ip;
+			$data['action_datetime'] = date("Y-m-d H:i:s");
+			$this->db->insert('activity_log', $data);
+		}
+	}
+
 	private function createUserToken($user_id)
 	{
 		$user_token = $this->db->get_where('user_tokens', array('user_id' => $user_id))->row();
