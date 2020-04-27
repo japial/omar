@@ -39,6 +39,91 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Transactions",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "token",
+							"value": "9xMUOUsaXzGPJkfBTqVJ3YtjZrsznzmSc4ca4238a0b923820dcc509a6f75849b4181",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://devpro.local/transactionapi/index",
+					"protocol": "http",
+					"host": [
+						"devpro",
+						"local"
+					],
+					"path": [
+						"transactionapi",
+						"index"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "token",
+							"value": "9xMUOUsaXzGPJkfBTqVJ3YtjZrsznzmSc4ca4238a0b923820dcc509a6f75849b4181",
+							"type": "text"
+						},
+						{
+							"key": "daily",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "manual_serial",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "three_digit",
+							"value": "[\n  {\n  \"code\": \"435\",\n  \"st\": \"12\",\n  \"rbl\": \"244\"\n  },\n  {\n\t\"code\": \"242\",\n\t\"st\": \"122\",\n\t\"rbl\": \"436\"\n  },\n  {\n\t\"code\": \"437\",\n\t\"st\": \"234\",\n\t\"rbl\": \"790\"\n  },\n  {\n\t\"code\": \"2134\",\n\t\"st\": \"34\",\n\t\"rbl\": \"231\"\n  }\n]",
+							"type": "text"
+						},
+						{
+							"key": "two_digit",
+							"value": "[\n  {\n\t\"code\": \"435\",\n\t\"st\": \"12\"\n  },\n  {\n\t\"code\": \"242\",\n\t\"st\": \"122\"\n  },\n  {\n\t\"code\": \"437\",\n\t\"st\": \"234\"\n  },\n  {\n\t\"code\": \"2134\",\n\t\"st\": \"34\"\n  }\n]",
+							"type": "text"
+						},
+						{
+							"key": "one_digit",
+							"value": "[\n  {\n\t\"code\": \"435\",\n\t\"st\": \"12\"\n  },\n  {\n\t\"code\": \"242\",\n\t\"st\": \"122\"\n  },\n  {\n\t\"code\": \"437\",\n\t\"st\": \"234\"\n  },\n  {\n\t\"code\": \"2134\",\n\t\"st\": \"34\"\n  }\n]",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://devpro.local/transactionapi/create",
+					"protocol": "http",
+					"host": [
+						"devpro",
+						"local"
+					],
+					"path": [
+						"transactionapi",
+						"create"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}
