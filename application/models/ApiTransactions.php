@@ -3,6 +3,15 @@
 
 class ApiTransactions extends CI_Model
 {
+	public function find_transaction($id)
+	{
+		$this->db->select('transaction.tran_id, transaction.user_id, transaction.token, transaction.submission_datetime');
+		$this->db->from('transaction');
+		$this->db->where('transaction.tran_id', $id);
+		$this->db->where('transaction.deletion_status', 0);
+		return $this->db->get()->row();
+	}
+
 	public function daily_transactions($user)
 	{
 		$this->db->select('transaction.tran_id,	transaction.token, transaction.submission_datetime, transaction_d.tran_d_id, transaction_d.code,	transaction_d.st, transaction_d.rbl');

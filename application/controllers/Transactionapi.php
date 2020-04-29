@@ -21,11 +21,11 @@ class Transactionapi extends CI_Controller
 		if ($_POST) {
 			$user_id = $this->ApiUsers->check_user_token($this->input->post('token'));
 			if ($user_id) {
-				$this->ApiUsers->createActivity($user_id, NULL, 'Transaction List Viewed');
 				$userData = $this->ApiUsers->user_details($user_id);
 				if ($userData->status == 1) {
 					$daily = $this->ApiTransactions->daily_transactions($user_id);
 					$weekly = $this->ApiTransactions->weekly_transactions($user_id);
+					$this->ApiUsers->createActivity($user_id, NULL, 'Transaction List View');
 					$data['status'] = $this->status['success'];
 					$data['data'] = array(
 						'user' => $userData,
@@ -48,7 +48,6 @@ class Transactionapi extends CI_Controller
 		if ($_POST) {
 			$user_id = $this->ApiUsers->check_user_token($this->input->post('token'));
 			if ($user_id) {
-				$this->ApiUsers->createActivity($user_id, NULL, 'Transaction List Viewed');
 				$userData = $this->ApiUsers->user_details($user_id);
 				if ($userData->status == 1) {
 					$daily = $this->input->post('daily');
@@ -58,10 +57,39 @@ class Transactionapi extends CI_Controller
 					}else{
 						$this->createWeeklyTransaction($transaction['id']);
 					}
+					$this->ApiUsers->createActivity($user_id, NULL, 'Transaction Create');
 					$data['status'] = $this->status['success'];
 					$data['data'] = array(
 						'serial_number' => $transaction['serial']
 					);
+				} else {
+					$data['status'] = $this->status['deactivated'];
+				}
+			} else {
+				$data['status'] = $this->status['auth_failed'];
+			}
+		} else {
+			$data['status'] = $this->status['bad_request'];
+		}
+		echo json_encode($data);
+	}
+
+	public function delete(){
+		if ($_POST) {
+			$user_id = $this->ApiUsers->check_user_token($this->input->post('token'));
+			if ($user_id) {
+				$userData = $this->ApiUsers->user_details($user_id);
+				if ($userData->status == 1) {
+					$tran_id = $this->input->post('tran_id');
+					$transaction = $this->ApiTransactions->find_transaction($tran_id);
+					if($transaction && $transaction->user_id == $user_id){
+						$this->db->where('tran_id', $tran_id);
+						$this->db->update('transaction', array('deletion_status' => 1));
+						$this->ApiUsers->createActivity($user_id, NULL, 'Transaction Delete');
+						$data['status'] = $this->status['success'];
+					}else{
+						$data['status'] = $this->status['validation_failed'];
+					}
 				} else {
 					$data['status'] = $this->status['deactivated'];
 				}
