@@ -85,12 +85,12 @@
 						},
 						{
 							"key": "daily",
-							"value": "0",
+							"value": "1",
 							"type": "text"
 						},
 						{
 							"key": "manual_serial",
-							"value": "",
+							"value": "W-M123D",
 							"type": "text"
 						},
 						{
@@ -120,6 +120,120 @@
 					"path": [
 						"transactionapi",
 						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "token",
+							"value": "9xMUOUsaXzGPJkfBTqVJ3YtjZrsznzmSc4ca4238a0b923820dcc509a6f75849b4181",
+							"type": "text"
+						},
+						{
+							"key": "tran_id",
+							"value": "21",
+							"type": "text"
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://devpro.local/transactionapi/delete",
+					"protocol": "http",
+					"host": [
+						"devpro",
+						"local"
+					],
+					"path": [
+						"transactionapi",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "token",
+							"value": "9xMUOUsaXzGPJkfBTqVJ3YtjZrsznzmSc4ca4238a0b923820dcc509a6f75849b4181",
+							"type": "text"
+						},
+						{
+							"key": "tran_id",
+							"value": "22",
+							"type": "text"
+						},
+						{
+							"key": "manual_serial",
+							"value": "MW-122",
+							"type": "text"
+						},
+						{
+							"key": "three_digit",
+							"value": "[\n  {\n  \"code\": \"435\",\n  \"st\": \"12\",\n  \"rbl\": \"244\"\n  },\n  {\n\t\"code\": \"242\",\n\t\"st\": \"122\",\n\t\"rbl\": \"436\"\n  },\n  {\n\t\"code\": \"437\",\n\t\"st\": \"234\",\n\t\"rbl\": \"790\"\n  },\n  {\n\t\"code\": \"2134\",\n\t\"st\": \"34\",\n\t\"rbl\": \"231\"\n  }\n]",
+							"type": "text"
+						},
+						{
+							"key": "two_digit",
+							"value": "[\n  {\n\t\"code\": \"435\",\n\t\"st\": \"12\"\n  },\n  {\n\t\"code\": \"242\",\n\t\"st\": \"122\"\n  },\n  {\n\t\"code\": \"437\",\n\t\"st\": \"234\"\n  },\n  {\n\t\"code\": \"2134\",\n\t\"st\": \"34\"\n  }\n]",
+							"type": "text"
+						},
+						{
+							"key": "one_digit",
+							"value": "[\n  {\n\t\"code\": \"435\",\n\t\"st\": \"12\"\n  },\n  {\n\t\"code\": \"242\",\n\t\"st\": \"122\"\n  },\n  {\n\t\"code\": \"437\",\n\t\"st\": \"234\"\n  },\n  {\n\t\"code\": \"2134\",\n\t\"st\": \"34\"\n  }\n]",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://devpro.local/transactionapi/update",
+					"protocol": "http",
+					"host": [
+						"devpro",
+						"local"
+					],
+					"path": [
+						"transactionapi",
+						"update"
 					]
 				}
 			},

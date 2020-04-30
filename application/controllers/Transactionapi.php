@@ -74,6 +74,46 @@ class Transactionapi extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function update(){
+		if ($_POST) {
+			$user_id = $this->ApiUsers->check_user_token($this->input->post('token'));
+			if ($user_id) {
+				$userData = $this->ApiUsers->user_details($user_id);
+				if ($userData->status == 1) {
+					$transaction = $this->ApiTransactions->find_transaction($this->input->post('tran_id'));
+					if($transaction && $transaction->user_id == $user_id){
+						if($userData->manual){
+							$transaction->serial = $this->input->post('manual_serial');
+							$this->db->where('tran_id', $transaction->tran_id);
+							$this->db->update('transaction', array('token' => $transaction->serial));
+						}
+						if($transaction->type == 1){
+							$this->db->delete('transaction_d', array('tran_id' => $transaction->tran_id));
+							$this->createDailyTransaction($transaction->tran_id);
+						}else{
+							$this->db->delete('transaction_w', array('tran_id' => $transaction->tran_id));
+							$this->createWeeklyTransaction($transaction->tran_id);
+						}
+						$this->ApiUsers->createActivity($user_id, NULL, 'Transaction Update');
+						$data['status'] = $this->status['success'];
+						$data['data'] = array(
+							'serial_number' => $transaction->serial
+						);
+					}else{
+						$data['status'] = $this->status['validation_failed'];
+					}
+				} else {
+					$data['status'] = $this->status['deactivated'];
+				}
+			} else {
+				$data['status'] = $this->status['auth_failed'];
+			}
+		} else {
+			$data['status'] = $this->status['bad_request'];
+		}
+		echo json_encode($data);
+	}
+
 	public function delete(){
 		if ($_POST) {
 			$user_id = $this->ApiUsers->check_user_token($this->input->post('token'));
