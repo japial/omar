@@ -14,7 +14,7 @@ class ApiTransactions extends CI_Model
 
 	public function daily_transactions($user)
 	{
-		$this->db->select('transaction.tran_id,	transaction.token, transaction.submission_datetime, transaction_d.tran_d_id, transaction_d.code, transaction_d.st, transaction_d.rbl, transaction_d.tran_type');
+		$this->db->select('transaction.tran_id,	transaction.token, transaction.submission_datetime, transaction_d.code, transaction_d.st, transaction_d.rbl, transaction_d.tran_type');
 		$this->db->from('transaction');
 		$this->db->join('transaction_d', 'transaction_d.tran_id=transaction.tran_id', 'inner');
 		$this->db->where('transaction.type', 1);
@@ -26,7 +26,7 @@ class ApiTransactions extends CI_Model
 
 	public function weekly_transactions($user)
 	{
-		$this->db->select('transaction.tran_id,	transaction.token, transaction.submission_datetime, transaction_w.tran_w_id, transaction_w.code, transaction_w.st, transaction_w.rbl, transaction_w.tran_type');
+		$this->db->select('transaction.tran_id,	transaction.token, transaction.submission_datetime, transaction_w.code, transaction_w.st, transaction_w.rbl, transaction_w.tran_type');
 		$this->db->from('transaction');
 		$this->db->join('transaction_w', 'transaction_w.tran_id=transaction.tran_id', 'inner');
 		$this->db->where('transaction.type', 2);
