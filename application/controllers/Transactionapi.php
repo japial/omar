@@ -60,7 +60,9 @@ class Transactionapi extends CI_Controller
 					$this->ApiUsers->createActivity($user_id, NULL, 'Transaction Create');
 					$data['status'] = $this->status['success'];
 					$data['data'] = array(
-						'serial_number' => $transaction['serial']
+						'serial_number' => $transaction['serial'],
+						'tran_id' => $transaction['id']
+						
 					);
 				} else {
 					$data['status'] = $this->status['deactivated'];
