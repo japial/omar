@@ -52,18 +52,21 @@ class Transactionapi extends CI_Controller
 				if ($userData->status == 1) {
 					$daily = $this->input->post('daily');
 					$transaction = $this->createTransaction($userData, $daily);
-					if($daily){
-						$this->createDailyTransaction($transaction['id']);
+					if($transaction){
+						if($daily){
+							$this->createDailyTransaction($transaction['id']);
+						}else{
+							$this->createWeeklyTransaction($transaction['id']);
+						}
+						$this->ApiUsers->createActivity($user_id, NULL, 'Transaction Create');
+						$data['status'] = $this->status['success'];
+						$data['data'] = array(
+							'serial_number' => $transaction['serial'],
+							'tran_id' => $transaction['id']
+						);
 					}else{
-						$this->createWeeklyTransaction($transaction['id']);
+						$data['status'] = $this->status['validation_failed'];
 					}
-					$this->ApiUsers->createActivity($user_id, NULL, 'Transaction Create');
-					$data['status'] = $this->status['success'];
-					$data['data'] = array(
-						'serial_number' => $transaction['serial'],
-						'tran_id' => $transaction['id']
-						
-					);
 				} else {
 					$data['status'] = $this->status['deactivated'];
 				}
@@ -85,22 +88,28 @@ class Transactionapi extends CI_Controller
 					$transaction = $this->ApiTransactions->find_transaction($this->input->post('tran_id'));
 					if($transaction && $transaction->user_id == $user_id){
 						if($userData->manual){
-							$transaction->serial = $this->input->post('manual_serial');
-							$this->db->where('tran_id', $transaction->tran_id);
-							$this->db->update('transaction', array('token' => $transaction->serial));
+							$transaction->token = $this->input->post('manual_serial');
+							if($transaction->token){
+								$this->db->where('tran_id', $transaction->tran_id);
+								$this->db->update('transaction', array('token' => $transaction->token));
+							}
 						}
-						if($transaction->type == 1){
-							$this->db->delete('transaction_d', array('tran_id' => $transaction->tran_id));
-							$this->createDailyTransaction($transaction->tran_id);
+						if($transaction->token){
+							if($transaction->type == 1){
+								$this->db->delete('transaction_d', array('tran_id' => $transaction->tran_id));
+								$this->createDailyTransaction($transaction->tran_id);
+							}else{
+								$this->db->delete('transaction_w', array('tran_id' => $transaction->tran_id));
+								$this->createWeeklyTransaction($transaction->tran_id);
+							}
+							$this->ApiUsers->createActivity($user_id, NULL, 'Transaction Update');
+							$data['status'] = $this->status['success'];
+							$data['data'] = array(
+								'serial_number' => $transaction->token
+							);
 						}else{
-							$this->db->delete('transaction_w', array('tran_id' => $transaction->tran_id));
-							$this->createWeeklyTransaction($transaction->tran_id);
+							$data['status'] = $this->status['validation_failed'];
 						}
-						$this->ApiUsers->createActivity($user_id, NULL, 'Transaction Update');
-						$data['status'] = $this->status['success'];
-						$data['data'] = array(
-							'serial_number' => $transaction->serial
-						);
 					}else{
 						$data['status'] = $this->status['validation_failed'];
 					}
@@ -158,11 +167,15 @@ class Transactionapi extends CI_Controller
 				$data['token'] = $this->makeWeeklyToken($userData->id);
 			}
 		}
-		$data['submission_datetime'] = date("Y-m-d H:i:s");
-		$this->db->insert('transaction', $data);
-		$tran['id'] = $this->db->insert_id();
-		$tran['serial'] = $data['token'];
-		return $tran;
+		if($data['token']){
+			$data['submission_datetime'] = date("Y-m-d H:i:s");
+			$this->db->insert('transaction', $data);
+			$tran['id'] = $this->db->insert_id();
+			$tran['serial'] = $data['token'];
+			return $tran;
+		}else{
+			return FALSE;
+		}
 	}
 
 	private function createDailyTransaction($tranID)
