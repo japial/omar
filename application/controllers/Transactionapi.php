@@ -50,7 +50,7 @@ class Transactionapi extends CI_Controller
 			if ($user_id) {
 				$userData = $this->ApiUsers->user_details($user_id);
 				if ($userData->status == 1) {
-					$daily = $this->input->post('daily');
+					$daily = intval($this->input->post('daily'));
 					$transaction = $this->createTransaction($userData, $daily);
 					if($transaction){
 						if($daily){
@@ -160,12 +160,15 @@ class Transactionapi extends CI_Controller
 			$data['token'] = $this->input->post('manual_serial');
 		}else{
 			if($daily){
-				$data['type'] = 1;
 				$data['token'] = $this->makeDailyToken($userData->id);
 			}else{
-				$data['type'] = 2;
 				$data['token'] = $this->makeWeeklyToken($userData->id);
 			}
+		}
+		if($daily){
+			$data['type'] = 1;
+		}else{
+			$data['type'] = 2;
 		}
 		if($data['token']){
 			$data['submission_datetime'] = date("Y-m-d H:i:s");
